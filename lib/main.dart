@@ -8,8 +8,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-
-  const MyApp ({Key? key}): super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,19 +52,16 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text('This is a very good number!'),
         content: Text('Both square and triangular!'),
       );
-
     } else if (!isSquare && !isTriangular) {
       return const AlertDialog(
         title: Text('This is an useless number!'),
         content: Text('Neither square nor triangular, such a waste!'),
       );
-
     } else if (isSquare) {
       return const AlertDialog(
         title: Text('This is a good number!'),
         content: Text("It's square!"),
       );
-
     } else {
       return const AlertDialog(
         title: Text('This is a good number!'),
@@ -102,10 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          showDialog<AlertDialog>(
-              context: context,
-              builder: (BuildContext context) => _buildPopupDialog(context)
-          );
+          showDialog<AlertDialog>(context: context, builder: (BuildContext context) => _buildPopupDialog(context));
         },
         tooltip: 'Check',
         child: const Icon(Icons.auto_awesome),
@@ -116,5 +109,4 @@ class _MyHomePageState extends State<MyHomePage> {
   bool _isIntegral(num x) => x is int || x.truncateToDouble() == x;
 
   bool _isPerfectSquare(num number) => _isIntegral(sqrt(number * number));
-
 }
