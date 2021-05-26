@@ -3,14 +3,14 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'package:dart_numerics/dart_numerics.dart' as numerics;
-
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+
+  const MyApp ({Key? key}): super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -18,15 +18,15 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Real numbers have Squares'),
+      home: const MyHomePage(title: 'Real numbers have Squares'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  const MyHomePage({Key? key, this.title}) : super(key: key);
 
-  final String title;
+  final String? title;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -36,7 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _number = 0;
 
   void _onChangeNumber(String value) {
-    var guess = int.tryParse(value);
+    final int? guess = int.tryParse(value);
     if (guess != null) {
       setState(() {
         _number = guess;
@@ -45,31 +45,31 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _buildPopupDialog(BuildContext context) {
-    var is_square = numerics.isPerfectSquare(_number);
-    var is_triangular = numerics.isPerfectSquare(8 * _number + 1);
+    final bool isSquare = _isPerfectSquare(_number);
+    final bool isTriangular = _isPerfectSquare(8 * _number + 1);
 
-    if (is_square && is_triangular) {
-      return new AlertDialog(
-        title: new Text("This is a very good number!"),
-        content: new Text("Both square and triangular!"),
+    if (isSquare && isTriangular) {
+      return const AlertDialog(
+        title: Text('This is a very good number!'),
+        content: Text('Both square and triangular!'),
       );
 
-    } else if (!is_square && !is_triangular) {
-      return new AlertDialog(
-        title: new Text("This is an useless number!"),
-        content: new Text("Neither square nor triangular, such a waste!"),
+    } else if (!isSquare && !isTriangular) {
+      return const AlertDialog(
+        title: Text('This is an useless number!'),
+        content: Text('Neither square nor triangular, such a waste!'),
       );
 
-    } else if (is_square) {
-      return new AlertDialog(
-        title: new Text("This is a good number!"),
-        content: new Text("It's square!"),
+    } else if (isSquare) {
+      return const AlertDialog(
+        title: Text('This is a good number!'),
+        content: Text("It's square!"),
       );
 
     } else {
-      return new AlertDialog(
-        title: new Text("This is a good number!"),
-        content: new Text("It's triangular!"),
+      return const AlertDialog(
+        title: Text('This is a good number!'),
+        content: Text("It's triangular!"),
       );
     }
   }
@@ -78,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(widget.title!),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -86,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(
+              const Text(
                 'Please input your number here',
               ),
               TextFormField(
@@ -102,14 +102,19 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          showDialog(
+          showDialog<AlertDialog>(
               context: context,
               builder: (BuildContext context) => _buildPopupDialog(context)
           );
         },
         tooltip: 'Check',
-        child: Icon(Icons.auto_awesome),
+        child: const Icon(Icons.auto_awesome),
       ),
     );
   }
+
+  bool _isIntegral(num x) => x is int || x.truncateToDouble() == x;
+
+  bool _isPerfectSquare(num number) => _isIntegral(sqrt(number * number));
+
 }
